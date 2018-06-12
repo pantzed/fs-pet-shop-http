@@ -47,10 +47,8 @@ let server = http.createServer(function(req, res) {
       res.statusCode = status;
       res.end(responseBody);
 
-
     });
   }
-
 });
 
   server.listen(port, function() {
