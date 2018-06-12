@@ -11,9 +11,10 @@ let server = http.createServer(function(req, res) {
   let url = req.url;
   let headers = req.headers;
 
-  let urlArr = url.split('/');
-  let targetFile = `${urlArr[1]}.json`;
-  let index = urlArr[2];
+  let targetFile = `pets.json`;
+  let indexMatch = url.match(/\/pets\/([-]?\d*)$/);
+  let index = (indexMatch !== null) ? parseInt(indexMatch[1]) : 'na';
+  console.log(index);
 
   switch (method) {
     case 'GET': get(targetFile, index); break;
@@ -25,24 +26,23 @@ let server = http.createServer(function(req, res) {
     let responseType = '/json/';
     let status = 200;
     let thisPath = path.join(__dirname, targetFile);
+
     fs.readFile(thisPath, 'utf8', (err, data) => {
       if (err) throw err;
 
       let pets = JSON.parse(data);
 
-      if (index === undefined) {
+      if (index === 'na') {
         responseBody = JSON.stringify(pets);
       }
-      if (index) {
-        if (index < 0 || index > pets.length -1) {
-          responseBody = 'Not Found';
-          responseType = 'text/plain';
-          status = 404;
-        }
-        else {
-          responseBody = JSON.stringify(pets[index]);
-        }
+      else if (index >= 0 && index <= pets.length - 1) {
+        responseBody = JSON.stringify(pets[index]);
       }
+      else {
+        responseBody = 'Not Found';
+        responseType = 'text/plain';
+        status = 404;
+        }
 
       res.setHeader('Content-Type', `${responseType}`);
       res.statusCode = status;
