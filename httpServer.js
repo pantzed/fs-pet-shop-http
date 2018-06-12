@@ -3,6 +3,7 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const querystring = require('querystring');
 const port = process.env.PORT || 8000;
 
 let server = http.createServer(function(req, res) {
@@ -11,19 +12,43 @@ let server = http.createServer(function(req, res) {
   let url = req.url;
   let headers = req.headers;
 
+  verifyReq(url);
+
   let targetFile = `pets.json`;
   let indexMatch = url.match(/\/pets\/([-]?\d*)$/);
   let index = (indexMatch !== null) ? parseInt(indexMatch[1]) : 'na';
-  console.log(index);
+  let params = parseParams(url);
 
   switch (method) {
-    case 'GET': get(targetFile, index); break;
+    case 'GET': read(targetFile, index); break;
+    case 'POST': create(targetFile, index, params); break;
     default: break;
   }
 
-  function get(targetFile, index) {
+  function verifyReq(url) {
+    let checkPath = (url.match(/\/pets/) !== null) ? true : false;
+    if (checkPath === false) {
+      res.setHeader('Content-Type', `text/plain`);
+      res.statusCode = 404;
+      res.end("Not Found");
+    }
+  }
+
+  function parseParams(url) {
+    return querystring.parse(url.match(/([\w\=\&]+[\w]$)/g)[0]);
+  }
+
+  function create(targetFile, index, params) {
     let responseBody;
-    let responseType = '/json/';
+    let responseType = 'application/json/';
+    let status = 200;
+    let thisPath = path.join(__dirname, targetFile);
+    console.log(true);
+  }
+
+  function read(targetFile, index) {
+    let responseBody;
+    let responseType = 'application/json/';
     let status = 200;
     let thisPath = path.join(__dirname, targetFile);
 
