@@ -10,6 +10,7 @@ let server = http.createServer(function(req, res) {
   let method = req.method;
   let url = req.url;
   let headers = req.headers;
+
   let urlArr = url.split('/');
   let targetFile = `${urlArr[1]}.json`;
   let index = urlArr[2];
@@ -19,7 +20,7 @@ let server = http.createServer(function(req, res) {
     default: break;
   }
 
-  function get(whatPath, index) {
+  function get(targetFile, index) {
     let responseBody;
     let responseType = '/json/';
     let status = 200;
