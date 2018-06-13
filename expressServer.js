@@ -4,11 +4,14 @@ var express = require('express');
 var app = express();
 const fs = require('fs');
 const path = require('path');
-const parser = require('bodyparser');
+const parser = require('body-parser');
+const morgan = require('morgan');
 const petsPath = path.join(__dirname, 'pets.json')
 var port = process.env.PORT || 8000;
 
 app.disable('x-powered-by');
+
+app.use(morgan('short'));
 
 app.get('/pets', (req, res) => {
   fs.readFile(petsPath, 'utf8', (err, petsJSON) => {
