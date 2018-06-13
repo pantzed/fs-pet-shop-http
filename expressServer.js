@@ -4,6 +4,7 @@ var express = require('express');
 var app = express();
 const fs = require('fs');
 const path = require('path');
+const parser = require('bodyparser');
 const petsPath = path.join(__dirname, 'pets.json')
 var port = process.env.PORT || 8000;
 
@@ -39,6 +40,41 @@ app.get('/pets/:id', (req, res) => {
 
     res.set('Content-Type', 'application/json');
     res.send(pets[id]);
+  });
+});
+
+app.post('/pets/:name/:age/:kind', (req, res) => {
+  fs.readFile(petsPath, 'utf8', (err, petsJSON) => {
+    if (err) {
+      console.log(error(err.stack));
+      return res. sendStatus(500);
+    }
+
+    let pets = JSON.parse(petsJSON);
+    let pet = {};
+    pet.name = req.params.name;
+    pet.age = Number.parseInt(req.params.age);
+    pet.kind = req.params.kind;
+
+    if (!pet.name || !pet.age || !pet.kind) {
+      return res.sendStatus(400);
+    }
+
+    pets.push(pet);
+
+    let newPetsJSON = JSON.stringify(pets);
+
+    fs.writeFile(petsPath, newPetsJSON, (err) => {
+      if (err) {
+        console.log(err.stack);
+        return res.sendStatus(500);
+      }
+
+    });
+
+    res.set('Content-Type', 'application/json');
+    res.send(pet);
+
   });
 });
 
