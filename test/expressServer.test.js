@@ -20,21 +20,21 @@ describe('pets expressServer', () => {
       name: 'Buttons'
     }];
 
-    app.__set__({
-      'fs': {
-        readFile: function(path, encoding, cb){
-          if(/pets.json$/.test(path)) return cb(null,JSON.stringify(petsArr));
-          cb(new Error('File does not exist'));
-        },
-        writeFile: function(path, data, cb){
-          if(/pets.json$/.test(path)){
-            petsArr = JSON.parse(data);
-            return cb(null);
-          }
-          return cb(new Error('File does not exist'));
-        }
-      }
-    })
+    // app.__set__({
+    //   'fs': {
+    //     readFile: function(path, encoding, cb){
+    //       if(/pets.json$/.test(path)) return cb(null,JSON.stringify(petsArr));
+    //       cb(new Error('File does not exist'));
+    //     },
+    //     writeFile: function(path, data, cb){
+    //       if(/pets.json$/.test(path)){
+    //         petsArr = JSON.parse(data);
+    //         return cb(null);
+    //       }
+    //       return cb(new Error('File does not exist'));
+    //     }
+    //   }
+    // })
   });
 
 
