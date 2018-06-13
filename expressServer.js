@@ -18,7 +18,7 @@ app.get('/pets', (req, res) => {
 
     let pets = JSON.parse(petsJSON);
 
-    res.set('Content-Type', 'text/plain');
+    res.set('Content-Type', 'application/json');
     res.send(pets);
   });
 });
@@ -37,7 +37,7 @@ app.get('/pets/:id', (req, res) => {
       return res.sendStatus(404);
     }
 
-    res.set('Content-Type', 'text/plain');
+    res.set('Content-Type', 'application/json');
     res.send(pets[id]);
   });
 });
@@ -49,3 +49,5 @@ app.use(function(req, res) {
 app.listen(port, function() {
   console.log('Listening on port', port);
 });
+
+module.exports = app;
