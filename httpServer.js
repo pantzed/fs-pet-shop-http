@@ -43,6 +43,7 @@ let server = http.createServer(function(req, res) {
     let responseType = 'application/json/';
     let status = 200;
     let thisPath = path.join(__dirname, targetFile);
+    
     console.log(true);
   }
 
