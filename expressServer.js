@@ -13,9 +13,7 @@ app.disable('x-powered-by');
 
 app.use(morgan('short'));
 app.use(bodyParser.json());
-// app.use((req, res) => {
-//   console.log(req);
-// });
+
 
 app.get('/pets', (req, res) => {
   fs.readFile(petsPath, 'utf8', (err, petsJSON) => {
@@ -46,7 +44,7 @@ app.post('/pets', (req, res) => {
     pet.age = parseInt(req.body.age);
     pet.kind = req.body.kind;
 
-    if (!pet.name || !pet.age || !pet.kind) {
+    if (!pet.name || !pet.age || !pet.kind ) {
       return res.sendStatus(400);
     }
 
